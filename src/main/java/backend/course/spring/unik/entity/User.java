@@ -11,6 +11,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 @Getter
 @Setter
 @Entity
@@ -29,6 +30,9 @@ public class User implements UserDetails {
 
     @Enumerated(EnumType.STRING)
     Role role;
+
+    @OneToMany(fetch = FetchType.LAZY, cascade = {CascadeType.REFRESH, CascadeType.MERGE})
+    List<Film> films;
 
     @JsonIgnore
     @Override
