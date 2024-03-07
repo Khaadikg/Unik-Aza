@@ -1,5 +1,6 @@
 package backend.course.spring.unik.security.jwt;
 
+import backend.course.spring.unik.exception.UnauthorizedException;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -58,6 +59,8 @@ public class JwtService {
 
     public boolean isTokenValid(String token, UserDetails userDetails) {
         final String username = extractUsername(token);
+        if (!username.equals(userDetails.getUsername()) && isTokenExpired(token))
+            throw new UnauthorizedException("Вы не авторизованы!");
         return (username.equals(userDetails.getUsername())) && !isTokenExpired(token);
     }
 
