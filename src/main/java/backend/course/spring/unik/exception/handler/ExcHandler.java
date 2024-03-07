@@ -1,7 +1,6 @@
 package backend.course.spring.unik.exception.handler;
 
-import backend.course.spring.unik.exception.NotFoundException;
-import backend.course.spring.unik.exception.UnauthorizedException;
+import backend.course.spring.unik.exception.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -19,5 +18,23 @@ public class ExcHandler {
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ExceptionResponse notFoundException(NotFoundException e) {
         return new ExceptionResponse(HttpStatus.NOT_FOUND, e.getClass().getName(), e.getMessage());
+    }
+
+    @ExceptionHandler(UserAlreadyExistException.class)
+    @ResponseStatus(HttpStatus.FOUND)
+    public ExceptionResponse notFoundException(UserAlreadyExistException e) {
+        return new ExceptionResponse(HttpStatus.FOUND, e.getClass().getName(), e.getMessage());
+    }
+
+    @ExceptionHandler(IncorrectDataException.class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    public ExceptionResponse notFoundException(IncorrectDataException e) {
+        return new ExceptionResponse(HttpStatus.UNAUTHORIZED, e.getClass().getName(), e.getMessage());
+    }
+
+    @ExceptionHandler(TokenExpiredException.class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    public ExceptionResponse notFoundException(TokenExpiredException e) {
+        return new ExceptionResponse(HttpStatus.UNAUTHORIZED, e.getClass().getName(), e.getMessage());
     }
 }
