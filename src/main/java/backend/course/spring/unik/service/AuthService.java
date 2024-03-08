@@ -72,4 +72,16 @@ public class AuthService {
             throw new TokenExpiredException("Время токена истекло!");
         }
     }
+
+    public String adminRegistration(RegistrationRequest request) {
+        User user = User.builder()
+                .username(request.getUsername())
+                .email(request.getEmail())
+                .password(passwordEncoder.encode(request.getPassword()))
+                .role(Role.ROLE_ADMIN)
+                .build();
+        userRepository.save(user);
+
+        return "Добро пожаловать!";
+    }
 }

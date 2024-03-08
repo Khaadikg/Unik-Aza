@@ -33,4 +33,9 @@ public class AuthController {
     public AuthenticationResponse refreshToken(@RequestBody RefreshTokenRequest request) {
         return authService.refreshToken(request);
     }
+
+    @PostMapping("/admin")
+    public String adminRegistration(@RequestBody RegistrationRequest registrationRequest) {
+        return authService.adminRegistration(registrationRequest);
+    }
 }

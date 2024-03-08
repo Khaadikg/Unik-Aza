@@ -19,6 +19,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig extends WebSecurityConfiguration {
     private final AuthenticationProvider authProvider;
     private final JwtAuthenticationFilter jwtAuthFilter;
+    private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
 
     public String[] PERMIT_ALL = {
             "/api/v1/auth/**",
@@ -26,13 +27,32 @@ public class SecurityConfig extends WebSecurityConfiguration {
             "/swagger-ui/**",
             "/backend/swagger-ui.html",
             "/documentation/**",
-            "/v3/api-docs/**"
+            "/v3/api-docs/**",
+            "/api/v1/films/all",
+            "/api/v1/films/search",
+            "/api/v1/films/filter",
+            "/api/v1/films/top"
+    };
+
+    public String[] ADMIN = {
+            "/api/v1/films/**",
+            "/api/v1/genres/**"
+    };
+
+    public String[] USER = {
+            "/api/v1/films/get/{id}"
     };
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
+                .exceptionHandling(c -> c.authenticationEntryPoint((req, res, e) -> {
+                    e.printStackTrace();
+                    jwtAuthenticationEntryPoint.commence(req,res,e);
+                }))
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
+                        .requestMatchers(ADMIN).hasRole("ADMIN")
+                        .requestMatchers(USER).hasRole("USER")
                         .requestMatchers(PERMIT_ALL).permitAll().anyRequest().authenticated())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authProvider)
