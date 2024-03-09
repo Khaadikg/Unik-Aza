@@ -40,7 +40,12 @@ public class SecurityConfig extends WebSecurityConfiguration {
     };
 
     public String[] USER = {
-            "/api/v1/films/get/{id}"
+            "/api/v1/films/get/{id}",
+            "/api/v1/films/all",
+            "/api/v1/films/top",
+            "/api/v1/films/search",
+            "/api/v1/films/filter",
+            "/api/v1/genres"
     };
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -51,8 +56,8 @@ public class SecurityConfig extends WebSecurityConfiguration {
                 }))
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(ADMIN).hasRole("ADMIN")
                         .requestMatchers(USER).hasRole("USER")
+                        .requestMatchers(ADMIN).hasRole("ADMIN")
                         .requestMatchers(PERMIT_ALL).permitAll().anyRequest().authenticated())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authProvider)
