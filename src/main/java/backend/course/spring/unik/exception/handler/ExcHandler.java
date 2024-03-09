@@ -37,4 +37,16 @@ public class ExcHandler {
     public ExceptionResponse notFoundException(TokenExpiredException e) {
         return new ExceptionResponse(HttpStatus.UNAUTHORIZED, e.getClass().getName(), e.getMessage());
     }
+
+    @ExceptionHandler(EmptyFileException.class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    public ExceptionResponse notFoundException(EmptyFileException e) {
+        return new ExceptionResponse(HttpStatus.UNAUTHORIZED, e.getClass().getName(), e.getMessage());
+    }
+
+    @ExceptionHandler(FilmAlreadyExistException.class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    public ExceptionResponse notFoundException(FilmAlreadyExistException e) {
+        return new ExceptionResponse(HttpStatus.UNAUTHORIZED, e.getClass().getName(), e.getMessage());
+    }
 }
